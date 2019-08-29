@@ -21,11 +21,24 @@ def stacked_histogram():
     p3 = plt.bar(x, hs, bottom=es+eb)
     p4 = plt.bar(x, hb, bottom=es+eb+hs)
 
-    plt.title('Scores by group and gender')
+    plt.title('Defects found per week by type')
     plt.ylabel('Defects')
     plt.xlabel('Week')
+    plt.legend((p4[0], p3[0], p2[0], p1[0]), ('Hard Major', 'Hard Minor', 'Easy Major', 'Easy Minor'))
     plt.xticks([5,10,15,20])
 
     plt.show()
 
-stacked_histogram()
+
+def log_plot():
+    plt.figure()
+
+    p1 = plt.scatter(x, np.log(total))
+
+    plt.show()
+
+log_plot()
+
+# 'Black box' fit (nonlinear regression)
+# Log linear fit
+# Rate fit
