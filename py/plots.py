@@ -2,6 +2,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from scipy import stats
+
 
 data = pd.read_csv('./data.csv')
 
@@ -30,14 +32,35 @@ def stacked_histogram():
     plt.show()
 
 
-def log_plot():
+def log_plot(x, y, linear=True):
+    # Perform linear regression
+    slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
+    y_reg = lambda x : slope * x + intercept
+
+    # Plot points
     plt.figure()
 
-    p1 = plt.scatter(x, np.log(total))
+    if linear:
+        plt.plot(x, y_reg(x))
+        plt.scatter(x, y)
+        # Graph labels
+        plt.title('Defects found per week by type (log linear)')
+        plt.ylabel('ln( Defects )')
+        plt.xlabel('Week')
+        plt.legend((f'{slope:.3f}x + {intercept:.3f}', 'ln( Total Defects )'))
+    
+    elif not linear:
+        plt.plot(x, np.e ** y_reg(x))
+        plt.scatter(x, np.e ** y)
+        # Graph labels
+        plt.title('Defects found per week by type')
+        plt.ylabel('Defects')
+        plt.xlabel('Week')
+        plt.legend((f'{np.e ** intercept:.1f}e^({slope:.2f}x)', 'Total Defects'))
 
     plt.show()
 
-log_plot()
+log_plot(x, np.log(total), linear=False)
 
 # 'Black box' fit (nonlinear regression)
 # Log linear fit
