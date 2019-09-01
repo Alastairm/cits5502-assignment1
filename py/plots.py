@@ -62,6 +62,25 @@ def log_plot(x, y, linear=True):
 
 log_plot(x, np.log(total), linear=False)
 
-# 'Black box' fit (nonlinear regression)
-# Log linear fit
-# Rate fit
+def change_in_total(x):
+    c_x = []
+    for i in range(1, len(x)):
+        c_x.append(x[i] - x[i-1])
+    return np.array(c_x)
+
+
+def defect_rate_of_change(x, y):
+    plt.figure()
+
+    p1 = plt.scatter(x[1:], change_in_total(y))
+
+    plt.title('Change in defects found from previous week')
+    plt.ylabel('Defects')
+    plt.xlabel('Week')
+    plt.legend((['Defects found less previous week\'s total']))
+    plt.xticks([5,10,15,20])
+    plt.xlim((0.5,20.5))
+
+    plt.show()
+    
+defect_rate_of_change(w, total)
